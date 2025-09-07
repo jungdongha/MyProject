@@ -20,12 +20,14 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(PROTECTED)
-    private int id;
+    private Long id;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createDate;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime modifyDate;
 
     @Override
@@ -33,7 +35,7 @@ public abstract class BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
-        return id == that.id;
+        return Objects.equals(id, that.id);
     }
     @Override
     public int hashCode() {
