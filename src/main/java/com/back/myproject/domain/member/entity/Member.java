@@ -4,6 +4,7 @@ package com.back.myproject.domain.member.entity;
 import com.back.myproject.domain.member.enums.UserRole;
 import com.back.myproject.global.jpa.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,24 +22,29 @@ import java.util.List;
 @Getter
 public class Member extends BaseEntity implements UserDetails {
 
-    @Column(name = "member_name", nullable = false)
-    private String memberName;
+    @Email
+    @Column(name = "member_email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "member_name)", nullable = false)
+    private String name;
 
     @Column(name = "member_nickname", nullable = false, unique = true)
-    private String memberNickname;
+    private String nickname;
 
     @Column(name = "member_password", nullable = false)
-    private String memberPassword;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role", nullable = false)
     private UserRole role;
 
     @Builder
-    public Member(String memberName,String memberNickname,String memberPassword, UserRole role) {
-        this.memberName = memberName;
-        this.memberNickname = memberNickname;
-        this.memberPassword = memberPassword;
+    public Member(String email, String name, String nickname, String password, UserRole role) {
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
         this.role = role;
     }
 
@@ -53,13 +59,13 @@ public class Member extends BaseEntity implements UserDetails {
     // 사용자의 비밀번호를 반환 (반드시 암호화된 상태여야 함)
     @Override
     public String getPassword() {
-        return this.memberPassword;
+        return this.password;
     }
 
     // 사용자의 고유 식별자(ID)를 반환
     @Override
     public String getUsername() {
-        return this.memberName;
+        return this.email;
     }
 
     // 아래 4개는 계정 상태를 관리하는 메서드 (특별한 경우가 아니면 모두 true를 반환하도록 설정)
